@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="com.stswalkoo.fwbadge.mapper.FwBadgeMapper">
+
+	<select id="getBadgeList" resultType="com.stswalkoo.fwbadge.model.FwBadge">
+		/* [FwBadgeMapper.getBadgeList] */
+		SELECT
+			bg.*
+		FROM
+			fwbadge bg
+		WHERE
+			1=1
+			<if test='badgekey != null'>
+				AND bg.badgekey = #{badgekey}
+			</if>
+			<if test='badgename != null'>
+				AND bg.badgename = #{badgename}
+			</if>
+			<if test='badgecode != null'>
+				AND bg.badgecode = #{badgecode}
+			</if>
+			<if test='repeatyn != null'>
+				AND bg.repeatyn = #{repeatyn}
+			</if>
+			<if test='credate != null'>
+				AND bg.credate = #{credate}
+			</if>	
+			<if test='creuserkey != null'>
+				AND bg.creuserkey = #{creuserkey}
+			</if>	
+			ORDER BY bg.credate DESC		
+	</select>
+	
+	
+	<select id="getmuserBadgeList" resultType="com.stswalkoo.fwbadge.model.FwmuserBadge">
+		/* [FwBadgeMapper.getmuserBadgeList] */
+		SELECT
+			mub.*,
+			bg.badgename
+		FROM
+			fwmuserbadge mub
+			INNER JOIN fwbadge bg ON bg.badgecode = mub.badgecode
+		WHERE
+			1=1
+			<if test='muserbadgekey != null'>
+				AND mub.muserbadgekey = #{muserbadgekey}
+			</if>
+			<if test='walkkey != null'>
+				AND mub.walkkey = #{walkkey}
+			</if>
+			<if test='userkey != null'>
+				AND mub.userkey = #{userkey}
+			</if>	
+			<if test='credate != null'>
+				AND mub.credate = #{credate}
+			</if>	
+			<if test='badgecode != null'>
+				AND mub.badgecode = #{badgecode}
+			</if>	
+	</select>
+	
+
+	<insert id="createmuserBadge" parameterType="com.stswalkoo.fwbadge.model.FwmuserBadge">
+		/* [FwBadgeMapper.createmuserBadge] */
+		insert into fwmuserbadge
+		(
+			walkkey,
+			userkey,
+			credate,
+			badgecode
+		)
+		values
+		(
+			#{walkkey},
+			#{userkey},
+			now(),
+			#{badgecode}
+		)
+		<selectKey resultType="Integer" keyProperty="muserbadgekey">
+			SELECT LAST_INSERT_ID() AS muserbadgekey;
+		</selectKey>
+	</insert>
+	
+	<update id="updatemuserBadge" parameterType="com.stswalkoo.fwbadge.model.FwmuserBadge">
+		/* [FwBadgeMapper.updatemuserBadge] */
+		UPDATE fwmuserbadge SET
+			<if test='walkkey != null'>
+				walkkey = #{walkkey},
+			</if>
+			<if test='userkey != null'>
+				userkey = #{userkey},
+			</if>
+			<if test='credate != null'>
+				credate = #{credate},
+			</if>
+			
+			<if test='badgecode != null'>
+				badgecode = #{badgecode},
+			</if>
+			muserbadgekey = #{muserbadgekey}
+		<where>
+			1=1
+			<if test='muserbadgekey != null'>
+				AND muserbadgekey = #{muserbadgekey}
+			</if>
+		</where>
+	</update>
+	
+</mapper>

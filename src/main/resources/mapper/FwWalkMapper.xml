@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="com.stswalkoo.fwwalk.mapper.FwWalkMapper">
+
+	<select id="getWalkList" resultType="com.stswalkoo.fwwalk.model.FwWalk">
+		/* [FwWalkMapper.getWalkList] */
+		SELECT
+			wk.*
+		FROM
+			fwmuserwalk muw
+			INNER JOIN fwwalk wk ON wk.walkkey = muw.walkkey
+			
+		WHERE
+			1=1
+			<if test='userkey != null'>
+				AND muw.userkey = #{userkey}
+			</if>
+			<if test='walkkey != null'>
+				AND wk.walkkey = #{walkkey}
+			</if>
+			<if test='walkname != null'>
+				AND wk.walkname = #{walkname}
+			</if>
+			<if test='startdate != null'>
+				AND wk.startdate = #{startdate}
+			</if>
+			<if test='enddate != null'>
+				AND wk.enddate = #{enddate}
+			</if>
+			<if test='distance != null'>
+				AND wk.distance = #{distance}
+			</if>	
+			<if test='creuserkey != null'>
+				AND wk.creuserkey = #{creuserkey}
+			</if>	
+			ORDER BY wk.startdate DESC		
+	</select>
+	
+
+	<insert id="createWalk" parameterType="com.stswalkoo.fwwalk.model.FwWalk">
+		/* [FwWalkMapper.createWalk] */
+		insert into fwwalk
+		(
+			walkname,
+			startdate,
+			enddate,
+			distance,
+			creuserkey
+		)
+		values
+		(
+			#{walkname},
+			#{startdate},
+			#{enddate},
+			#{distance},
+			#{creuserkey}
+		)
+		<selectKey resultType="Integer" keyProperty="walkkey">
+			SELECT LAST_INSERT_ID() AS walkkey;
+		</selectKey>
+	</insert>
+	
+	<update id="updateWalk" parameterType="com.stswalkoo.fwwalk.model.FwWalk">
+		/* [FwWalkMapper.updateWalk] */
+		UPDATE fwwalk SET
+			<if test='walkname != null'>
+				walkname = #{walkname},
+			</if>
+			<if test='startdate != null'>
+				startdate = #{startdate},
+			</if>
+			<if test='endYn != null and endYn.equals(true)'>
+				enddate = now(),
+			</if>
+			<if test='(endYn == null || endYn.equals(false)) and enddate != null'>
+				enddate = #{enddate},
+			</if>
+			<if test='distance != null'>
+				distance = #{distance},
+			</if>
+			<if test='creuserkey != null'>
+				creuserkey = #{creuserkey},
+			</if>
+			walkkey = #{walkkey}
+		<where>
+			1=1
+			<if test='walkkey != null'>
+				AND walkkey = #{walkkey}
+			</if>
+		</where>
+	</update>
+	
+	<delete id="deleteWalk">
+		/* [FwWalkMapper.deleteWalk] */
+		DELETE FROM fwwalk
+		<where>
+			1=1
+			<if test='walkkey != null'>
+				AND walkkey = #{walkkey}
+			</if>
+		</where>
+	</delete>
+	
+	<select id="getMuserWalkList" resultType="com.stswalkoo.fwwalk.model.FwMuserWalk">
+		/* [FwWalkMapper.getMuserWalkList] */
+		SELECT
+			muw.*,
+			u.userText
+		FROM
+			fwmuserwalk muw
+			INNER JOIN fwuser u ON u.userKey = muw.userKey
+		WHERE
+			1=1
+			<if test='userwalkkey != null'>
+				AND muw.userwalkkey = #{userwalkkey}
+			</if>
+			<if test='walkkey != null'>
+				AND muw.walkkey = #{walkkey}
+			</if>
+			<if test='getpoint != null'>
+				AND muw.getpoint = #{getpoint}
+			</if>
+			<if test='endYn != null and endYn.equals(true)'>
+				AND muw.enddate is not null
+			</if>
+			<if test='endYn != null and endYn.equals(false)'>
+				AND muw.enddate is null
+			</if>
+			<if test='userkey != null'>
+				AND muw.userkey = #{userkey}
+			</if>	
+<!-- 			<if test='deleteYn != null'> -->
+<!-- 				AND muw.deleteYn = #{deleteYn} -->
+<!-- 			</if>	 -->
+<!-- 			<if test='deleteYn == null'> -->
+<!-- 				AND muw.deleteYn = 0 -->
+<!-- 			</if>	 -->
+	</select>
+	
+
+	<insert id="createMuserWalk" parameterType="com.stswalkoo.fwwalk.model.FwMuserWalk">
+		/* [FwWalkMapper.createMuserWalk] */
+		insert into fwmuserwalk
+		(
+			walkkey,
+			getpoint,
+			userkey,
+			startdate,
+			enddate
+		)
+		values
+		(
+			#{walkkey},
+			#{getpoint},
+			#{userkey},
+			now(),
+			#{enddate}
+		)
+		<selectKey resultType="Integer" keyProperty="userwalkkey">
+			SELECT LAST_INSERT_ID() AS userwalkkey;
+		</selectKey>
+	</insert>
+	
+	<update id="updateMuserWalk" parameterType="com.stswalkoo.fwwalk.model.FwMuserWalk">
+		/* [FwWalkMapper.updateMuserWalk] */
+		UPDATE fwmuserwalk SET
+			<if test='walkkey != null'>
+				walkkey = #{walkkey},
+			</if>
+			<if test='getpoint != null'>
+				getpoint = #{getpoint},
+			</if>
+			<if test='userkey != null'>
+				userkey = #{userkey},
+			</if>
+			<if test='startdate != null'>
+				startdate = #{startdate},
+			</if>
+			<if test='endYn != null and endYn.equals(true)'>
+				enddate = now(),
+			</if>
+			<if test='(endYn == null || endYn.equals(false)) and enddate != null'>
+				enddate = #{enddate},
+			</if>
+			userwalkkey = #{userwalkkey}
+		<where>
+			1=1
+			<if test='userwalkkey != null'>
+				AND userwalkkey = #{userwalkkey}
+			</if>
+		</where>
+	</update>
+	
+	<delete id="deleteMuserWalk">
+		/* [FwWalkMapper.deleteMuserWalk] */
+		DELETE FROM fwmuserwalk
+		<where>
+			1=1
+			<if test='userwalkkey != null'>
+				AND userwalkkey = #{userwalkkey}
+			</if>
+		</where>
+	</delete>
+	
+<!-- 	만약 deleteYn이 있는 테이블의 경우 -->
+<!-- 	<update id="deleteMuserWalk" parameterType="com.stswalkoo.fwwalk.model.FwMuserWalk"> -->
+<!-- 		/* [FwWalkMapper.deleteMuserWalk] */ -->
+<!-- 		UPDATE fwmuserwalk SET -->
+			
+<!-- 			deleteYn = 1 -->
+<!-- 		<where> -->
+<!-- 			userwalkkey = #{userwalkkey} -->
+<!-- 		</where> -->
+<!-- 	</update> -->
+</mapper>
