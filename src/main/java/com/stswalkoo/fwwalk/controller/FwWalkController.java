@@ -52,8 +52,9 @@ public class FwWalkController {
 				result = true;
 			}
 		}catch(Exception e){e.printStackTrace();}
-		
+
 		returnMap.put("result", result);
+		returnMap.put("walkkey", Walk.getWalkkey());
 		return returnMap;
 	}
     

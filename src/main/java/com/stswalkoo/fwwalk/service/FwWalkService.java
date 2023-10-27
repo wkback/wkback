@@ -85,7 +85,6 @@ public class FwWalkService {
 //		여기에 줄 뱃지들
 		param = new FwMuserWalk();
 		param.setUserkey(walkUser.getUserkey());
-		// enddate�� not null�� ��
 //		setEndYn == 산책 종료
 		param.setEndYn(true);
 //		db에서 FwMuserWalk의 데이터 가져와서 찾아보기
