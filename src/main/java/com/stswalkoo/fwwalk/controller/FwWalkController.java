@@ -2,6 +2,7 @@ package com.stswalkoo.fwwalk.controller;
 
 
 
+import com.stswalkoo.fwmember.model.Member;
 import com.stswalkoo.fwwalk.mapper.FwWalkMapper;
 import com.stswalkoo.fwwalk.service.FwWalkService;
 import net.sf.json.JSONObject;
@@ -39,6 +40,25 @@ public class FwWalkController {
 
 	@Autowired
 	private com.stswalkoo.fwwalk.service.FwWalkService walkService;
+
+	@RequestMapping(value = "/wk.getUserData", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getUserData() {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<FwWalk> walkData = walkService.getWalkList(new FwWalk());
+			List<FwMuserWalk> userWalkData = walkService.getMuserWalkList(new FwMuserWalk());
+
+			response.put("walkData", walkData);
+			response.put("userWalkData", userWalkData);
+			response.put("status", "success");
+		} catch (Exception e) {
+			response.put("status", "error");
+			response.put("message", "An error occurred while fetching data.");
+		}
+		return response;
+	}
+
 
 	@RequestMapping(value = "/wk.saveWalk", method = RequestMethod.POST)
 	@ResponseBody
@@ -110,6 +130,8 @@ public class FwWalkController {
 		returnMap.put("result", result);
 		return returnMap;
 	}
+
+
 
 
 
