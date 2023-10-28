@@ -20,6 +20,12 @@ import com.stswalkoo.fwwalk.model.FwWalk;
 @Transactional(rollbackFor = Exception.class)
 
 public class FwWalkService {
+	private final FwWalkMapper walkMapper;
+
+	@Autowired
+	public FwWalkService(FwWalkMapper walkMapper) {
+		this.walkMapper = walkMapper;
+	}
 
 	@Autowired(required=false)
 	private FwWalkMapper FwWalkMapper;
@@ -188,6 +194,12 @@ public class FwWalkService {
 	}
 	public void deleteMuserWalk(Integer userWalkKey){
 		FwWalkMapper.deleteMuserWalk(userWalkKey);
+	}
+	public void saveFriendImage(String friendImage) {
+		// Logic to save the friendImage to the database
+		FwMuserWalk walkUser = new FwMuserWalk();
+		walkUser.setFriendImage(friendImage);
+		walkMapper.createMuserWalk(walkUser);
 	}
 
 }
