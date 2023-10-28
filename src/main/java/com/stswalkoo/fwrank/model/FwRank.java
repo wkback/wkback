@@ -13,19 +13,21 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name = "fwwalk_back")
+@Table(name = "fwwalk")
 public class FwRank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-		// @Column(name = "walkkey")
-    private int walkkey; //얘를 기준으로 나옴
+    private int walkkey;
+    
+    private Long creuserkey;
+		private String walkname;
+		private String distance;
 		
-		private Long userkey;
-		private int min;
-		private int seconds;
-		private float distance;
-		private int getpoint;
 
-		@Column(name = "walkdate")
-		private LocalDateTime walkDate;
+    @Column(name = "startdate")
+    private LocalDateTime startdate;
+
+    @Column(name = "enddate")
+    private LocalDateTime enddate;
+
 }
