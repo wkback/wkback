@@ -117,13 +117,13 @@ public class FwWalkController {
 		JSONObject jsonParam = null;
 		Boolean result = false;
 
-		Integer walkKey = null;
+		Integer walkkey = null;
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 
 		try{
 			jsonParam = JSONObject.fromObject(param);
-			if(jsonParam.has("walkKey")) 	walkKey = jsonParam.getInt("walkKey");
-			walkService.deleteWalk(walkKey);
+			if(jsonParam.has("walkkey")) 	walkkey = jsonParam.getInt("walkkey");
+			walkService.deleteWalk(walkkey);
 			result = true;
 		}catch(Exception e){e.printStackTrace();}
 

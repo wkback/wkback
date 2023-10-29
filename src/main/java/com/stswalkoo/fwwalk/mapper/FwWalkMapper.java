@@ -14,7 +14,7 @@ import com.stswalkoo.fwwalk.model.FwWalk;
 public interface FwWalkMapper {
 	void createWalk(FwWalk walk);
 	void updateWalk(FwWalk walk);
-	void deleteWalk(@Param("walkKey")Integer walkKey);
+	void deleteWalk(@Param("walkkey")Integer walkkey);
 	List<FwWalk> getWalkList(FwWalk walk);
 
 	void createMuserWalk(FwMuserWalk walk);
